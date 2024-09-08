@@ -12,54 +12,60 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 @Configuration
 @Slf4j
 @RequiredArgsConstructor
 public class WebSocketHandler extends TextWebSocketHandler {
 
-    private final ObjectMapper jsonMapper;
-    private final ChatService chatService;
+    //private final ObjectMapper jsonMapper;
+    //private final ChatService chatService;
 
-    private final Set<WebSocketSession> sessions = Collections.synchronizedSet(new HashSet<>());
+    private final Map<String, Set<WebSocketSession>> roomSessions = new HashMap<>();
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         log.info("handleTextMessage");
-        for (WebSocketSession webSocketSession : sessions) {
-            if (webSocketSession.isOpen()) {
-                webSocketSession.sendMessage(message);
-                log.info("sendMessage => [{}]->[{}]", webSocketSession.getId(),message);
+        String roomId = getRoomId(session);
+        Set<WebSocketSession> sessions = roomSessions.get(roomId);
+        // 해당 채팅방에 있는 모든 클라이언트에게 메시지 브로드캐스트
+
+        if (sessions != null) {
+            log.info("{}방 sessions 개수 {}",roomId,sessions.size());
+            for (WebSocketSession webSocketSession : sessions) {
+                if (webSocketSession.isOpen()) {
+                    webSocketSession.sendMessage(message);
+                }
             }
+        }else{
+            log.info("{}방 sessions 개수 {}",roomId,0);
         }
     }
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         log.info("afterConnectionEstablished");
+        String room = getRoomId(session); // 요청에서 방 ID를 가져옴
+        roomSessions.computeIfAbsent(room, k -> Collections.synchronizedSet(new HashSet<>())).add(session);
 
-        sessions.add(session);
-        log.info("[{}] session Opened? {}",session.getId(),session.isOpen());
-
-        Iterator<WebSocketSession> iterator = sessions.iterator();
-        log.info("session List ");
-        while (iterator.hasNext()) {
-            WebSocketSession webSocketSession = iterator.next();
-            if (webSocketSession.isOpen()) {
-                log.info("sessionID = {} ",webSocketSession.getId());
-            }
-        }
     }
+
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         log.info("afterConnectionClosed");
+        String roomId = getRoomId(session); // 요청에서 방 ID를 가져옴
+        Set<WebSocketSession> sessions = roomSessions.get(roomId);
+        if (sessions != null) {
+            sessions.remove(session);
+        }
+    }
 
-        sessions.remove(session);
+    private String getRoomId(WebSocketSession session) {
+        // 요청 URI에서 방 ID를 추출
+        log.info("getRoomId: {}",session.getUri().getPath().split("/")[3]);
+        return session.getUri().getPath().split("/")[3]; // 예: /chat/room1 이라면 "room1"을 가져옴
     }
 
 }

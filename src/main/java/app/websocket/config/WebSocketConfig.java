@@ -14,7 +14,8 @@ public class WebSocketConfig implements WebSocketConfigurer {
     private final WebSocketHandler webSocketHandler;
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(webSocketHandler, "/ws")
+        registry.addHandler(webSocketHandler, "/ws/chat/")
+                .addHandler(webSocketHandler, "/ws/chat/{roomId}")
                 .setAllowedOrigins("*")
                 .setAllowedOrigins("http://localhost:8081")  // 허용할 클라이언트의 도메인 설정
                 .withSockJS();

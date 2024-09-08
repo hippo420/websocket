@@ -1,23 +1,29 @@
 <template>
   <div class="chat-container">
-    <h2>채팅방</h2>
-    <div class="messages" v-if="messages.length > 0">
-      <div
-        v-for="(msg, index) in messages"
-        :key="index"
-        :class="['message', msg.sender === sender ? 'my-message' : 'other-message']"
-      >
-        <div class="message-content">
-          <strong>{{ msg.sender }}</strong>: {{ msg.message }}
+    <h2>채팅방 입장</h2>
+    <input v-model="roomId" placeholder="채팅방 이름 입력" />
+    <button @click="enterroomId">채팅방 입장</button>
+
+    <div v-if="connected">
+      <h3>채팅방: {{ roomId }}</h3>
+      <div class="messages" v-if="messages.length > 0">
+        <div
+          v-for="(msg, index) in messages"
+          :key="index"
+          :class="['message', msg.sender === sender ? 'my-message' : 'other-message']"
+        >
+          <div class="message-content">
+            <strong>{{ msg.sender }}</strong>: {{ msg.content }}
+          </div>
         </div>
       </div>
+      <div class="no-messages" v-else>
+        아직 메시지가 없습니다. 첫 메시지를 입력해보세요!
+      </div>
+      <input v-model="sender" placeholder="이름 입력" />
+      <input v-model="message" @keyup.enter="sendMessage" placeholder="메시지를 입력하세요..." />
+      <button @click="sendMessage">전송</button>
     </div>
-    <div class="no-messages" v-else>
-      아직 메시지가 없습니다. 첫 메시지를 입력해보세요!
-    </div>
-    <input v-model="sender" placeholder="이름 입력" />
-    <input v-model="message" @keyup.enter="sendMessage" placeholder="메시지를 입력하세요..." />
-    <button @click="sendMessage">전송</button>
   </div>
 </template>
 
@@ -29,16 +35,21 @@ export default {
     return {
       sender: "",
       message: "",
+      roomId: "",
       messages: [],
       socket: null,
+      connected: false,
     };
   },
-  mounted() {
-    this.connect();
-  },
   methods: {
-    connect() {
-      this.socket = new SockJS("http://localhost:8080/ws");
+    enterroomId() {
+      if (this.roomId) {
+        this.connect(this.roomId);
+        this.connected = true;
+      }
+    },
+    connect(roomId) {
+      this.socket = new SockJS(`http://localhost:8080/ws/chat/${roomId}`);
       this.socket.onmessage = (event) => {
         const receivedMessage = JSON.parse(event.data);
         this.messages.push(receivedMessage);
@@ -48,7 +59,7 @@ export default {
       if (this.message && this.sender) {
         const chatMessage = {
           sender: this.sender,
-          message: this.message,
+          content: this.message,
         };
         this.socket.send(JSON.stringify(chatMessage));
         this.messages.push(chatMessage);
@@ -60,6 +71,7 @@ export default {
 </script>
 
 <style scoped>
+/* 기존 CSS 유지, 필요한 추가 스타일만 포함 */
 .chat-container {
   max-width: 600px;
   margin: 20px auto;
