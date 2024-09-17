@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="app.websocket.chat.ChatRepository">
+
+<insert id="saveMessage" parameterType="app.websocket.chat.entity.Message">
+    INSERT INTO MESSAGE
+    (
+        ROOM_ID
+      , TYPE
+      , SND_ID
+      , MESSAGE
+      , SND_DTM
+    )
+    VALUES
+    (
+        #{ROOM_ID}
+      , #{TYPE}
+      , #{SND_ID}
+      , #{MESSAGE}
+      , #{SND_DTM}
+    )
+</insert>
+
+
+<select id="findMsgAll" parameterType="String" resultType="app.websocket.chat.entity.Message">
+    SELECT ROOM_ID
+         , SND_ID
+         , MESSAGE
+         , SND_DTM
+         , TYPE
+      FROM MESSAGE
+     WHERE 1=1
+       <if test="ROOM_ID != null">
+       AND ROOM_ID = #{ROOM_ID}
+       </if>
+     ORDER BY ID
+</select>
+</mapper>

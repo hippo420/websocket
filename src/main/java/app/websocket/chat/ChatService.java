@@ -1,9 +1,12 @@
-package app.websocket;
+package app.websocket.chat;
 
-import app.websocket.entity.Bang;
+import app.websocket.chat.entity.Bang;
+import app.websocket.chat.entity.Message;
+import app.websocket.system.utils.DateUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -16,6 +19,9 @@ public class ChatService {
     private final ObjectMapper objectMapper;
     private Map<String, Bang> chatRooms;
 
+    @Autowired
+    private ChatRepository  chatRepository;
+
     public ChatService(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
@@ -27,8 +33,8 @@ public class ChatService {
     }
 
     //모든 방을 찾는 메서드
-    public List<Bang> findAllRoom() {
-        return new ArrayList<>(chatRooms.values());
+    public List<Bang> findBangByUserId(String userId) {
+        return chatRepository.findBangByUserId(userId);
     }
 
     //id로 방을 찾고 결과로 ChatRoom 객체 반환
@@ -49,11 +55,20 @@ public class ChatService {
         return chatRoom;
     }
 
-    public <T> void sendMessage(WebSocketSession session, T message) {
-        try{
-            session.sendMessage(new TextMessage(objectMapper.writeValueAsString(message)));
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
-        }
+    public Message sendMsg(Message message){
+        message.setSND_DTM(DateUtil.getDTM());
+        message.setTYPE(Message.MessageType.TALK);
+        chatRepository.saveMessage(message);
+        return Message.builder()
+                .TYPE(message.getTYPE())
+                .MESSAGE(message.getMESSAGE())
+                .ROOM_ID(message.getROOM_ID())
+                .SND_ID(message.getSND_ID())
+                .SND_DTM(message.getSND_DTM())
+                .build();
+    }
+
+    public List<Message> findMsgAll(String roomId) {
+        return chatRepository.findMsgAll(roomId);
     }
 }

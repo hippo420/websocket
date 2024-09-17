@@ -1,15 +1,23 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <ChatVue msg="채팅"/>
+  
+  <HeaderVue/>
+  
+  <MainView/>
+  <FooterVue/>
 </template>
 
 <script>
-import ChatVue from './ChatVue.vue'
+
+import FooterVue from '@/FooterVue.vue';
+import HeaderVue from '@/HeaderVue.vue';
+import MainView from '@/MainView.vue';
 
 export default {
   name: 'App',
   components: {
-    ChatVue
+    HeaderVue,
+    MainView,
+    FooterVue,
   }
 }
 </script>

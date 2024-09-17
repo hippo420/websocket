@@ -3,6 +3,8 @@
     <h2>채팅방 입장</h2>
     <input v-model="roomId" placeholder="채팅방 이름 입력" />
     <button @click="enterroomId">채팅방 입장</button>
+    <input v-model="roomName" placeholder="채팅방 생성" />
+    <button @click="createroom">채팅방 생성</button>
 
     <div v-if="connected">
       <h3>채팅방: {{ roomId }}</h3>
@@ -36,12 +38,16 @@ export default {
       sender: "",
       message: "",
       roomId: "",
+      roomName: "",
       messages: [],
       socket: null,
       connected: false,
     };
   },
   methods: {
+    createroom(){
+      
+    },
     enterroomId() {
       if (this.roomId) {
         this.connect(this.roomId);
@@ -49,7 +55,8 @@ export default {
       }
     },
     connect(roomId) {
-      this.socket = new SockJS(`http://localhost:8080/ws/chat/${roomId}`);
+      console.log('roomId:',roomId);
+      this.socket = new SockJS('http://localhost:8081/ws/chat/');
       this.socket.onmessage = (event) => {
         const receivedMessage = JSON.parse(event.data);
         this.messages.push(receivedMessage);
