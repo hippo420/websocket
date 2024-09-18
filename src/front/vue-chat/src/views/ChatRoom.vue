@@ -1,9 +1,12 @@
 <template>
     <div class="chat-room-container">
-        <h2>Chat Room {{ roomId }}</h2>
+        <header class="header">
+            <h2> {{ roomId }}</h2>
+        </header>
+        
     
         <!-- 채팅 메시지 목록 -->
-        <div class="messages">
+        <main class="messages">
         <BubbleMessage
             v-for="(msg, index) in messages"
             :key="index"
@@ -13,12 +16,15 @@
             :isOwnMessage="isOwnMessage(msg.snd_ID)"
             :sndDTM="msg.snd_DTM"
         />
-        </div>
+        </main>
     
-        <div class="message-input">
-            <input v-model="newMessage" @keyup.enter="sendMessage" placeholder="Type your message..." />
-            <button @click="sendMessage">Send</button>
-        </div>
+        <footer class="message-input">
+            
+            <input v-model="newMessage" @keyup.enter="sendMessage" placeholder="메시지를 입력하세요" />
+            <button @click="sendMessage">
+                <font-awesome-icon icon="paper-plane" />
+            </button>
+        </footer>
     </div>
 </template>
 
@@ -60,7 +66,6 @@ name: 'ChatRoom',
                     const msg = JSON.parse(message.body);
                     console.log('받은 메시지: ',msg);
                     this.messages.push(msg);
-                    console.log(this.messages);
                 });
             };
 

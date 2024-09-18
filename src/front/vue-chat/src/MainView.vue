@@ -13,7 +13,7 @@ name: 'MainView',
 <style scoped>
 .main-view {
 min-height: calc(100vh - 120px); /* 헤더와 푸터를 제외한 최소 높이 설정 */
-padding: 20px;
+padding: 0px;
 box-sizing: border-box;
 }
 </style>

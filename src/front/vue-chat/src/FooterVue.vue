@@ -1,15 +1,24 @@
 <template>
-    <footer class="footer">
+    <div  class="footer">
         
         <div v-if="isLoggedIn">
-            <button @click="navigate('chat-list')">Chat</button>
-            <button @click="navigate('settings')">Settings</button>
-            <button @click="navigate('friends')">Friends</button>
+            <button @click="navigate('chat-list')" >
+                <font-awesome-icon icon="comments" />
+                <p>채팅방</p>
+            </button>
+            <button @click="navigate('friends')" >
+                <font-awesome-icon icon="user" />
+                <p>친구</p>
+            </button>
+            <button @click="navigate('settings')" >
+                <font-awesome-icon icon="cog" />
+                <p>설정</p>
+            </button>
         </div>
         <div v-else>
             <button @click="navigate('login')">Login</button>
         </div>
-    </footer>
+    </div >
 </template>
 
 <script>
@@ -32,7 +41,7 @@ export default {
 
 <style scoped>
 .footer {
-background-color: #f5f5f5;
+background-color: #333;
 border-top: 1px solid #ddd;
 padding: 10px 0;
 display: flex;
@@ -44,14 +53,20 @@ left: 0;
 }
 
 .footer button {
-background: none;
+background: #333;
 border: none;
-font-size: 16px;
-color: #333;
+font-size: 30px;
+color: #ddd;
 cursor: pointer;
+border-color: #f5f5f5;
+}
+
+.footer button p{
+    font-size: 9px;
 }
 
 .footer button:hover {
-color: #4CAF50;
+color: #c8cd38;
 }
+
 </style>
