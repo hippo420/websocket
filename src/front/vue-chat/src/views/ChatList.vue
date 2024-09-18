@@ -14,38 +14,38 @@
 </template>
 
 <script>
+import Transaction from '@/common/core/Transaction';
 import ChatCard from '../components/ChatCard.vue';
-
 export default {
-components: {
-    ChatCard,
-},
-data() {
-    return {
-    chatList: [
-        {
-        id: 1,
-        name: 'Chat Room 1',
-        lastMessage: 'Hello there!',
-        lastMessageDate: '2024-09-01',
-        imageUrl: 'https://via.placeholder.com/50', // 채팅방 이미지
-        },
-        {
-        id: 2,
-        name: 'Chat Room 2',
-        lastMessage: 'How are you?',
-        lastMessageDate: '2024-09-02',
-        imageUrl: 'https://via.placeholder.com/50',
-        },
-        // 추가 채팅방 데이터
-    ],
-    };
-},
-methods: {
-    openChat(chatId) {
-    this.$router.push(`/chat/${chatId}`);
+    components: {
+        ChatCard,
     },
-},
+    data() {
+        return {
+            chatList: [
+                
+            ],
+        };
+    },
+    methods: {
+        openChat(chatId) {
+            this.$router.push(`/chat/${chatId}`);
+        },
+        loadChatList(){
+            let data ={
+                USER_ID:  this.$store.state.userId
+            };
+            
+            Transaction.gfnTrx("/findBangByUserId","GET",data ,this.fnChatListCallback);
+        },
+        fnChatListCallback(data) {
+            console.log(data);
+            this.chatList = [...data];
+        }
+    },
+    mounted(){
+        this.loadChatList();
+    }
 };
 </script>
 

@@ -1,6 +1,7 @@
 package app.websocket.chat;
 
 import app.websocket.chat.entity.Bang;
+import app.websocket.chat.entity.ChatList;
 import app.websocket.chat.entity.Message;
 import app.websocket.member.entity.Member;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,9 +38,10 @@ public class ChatContoller {
         //Get 요청이 들어올 시, 모든 방 목록을 조회한다.
     }
 
-    @RequestMapping("findBangByUserId")
-    public List<Bang> findBangByUserId(@ModelAttribute Member member) {
-        return chatService.findBangByUserId(member.getUserId());
+    @GetMapping("findBangByUserId")
+    public List<ChatList> findBangByUserId(@RequestParam String USER_ID) {
+        log.info("findBangByUserId userId :{}",USER_ID);
+        return chatService.findBangByUserId(USER_ID);
         //Get 요청이 들어올 시, 모든 방 목록을 조회한다.
     }
 

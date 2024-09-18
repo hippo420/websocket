@@ -38,4 +38,32 @@
        </if>
      ORDER BY ID
 </select>
+    <select id="findBangByUserId" parameterType="String" resultType="app.websocket.chat.entity.ChatList">
+        SELECT A.ROOM_ID
+             , A.NAME
+             , A.IMG_CTT
+             , C.MESSAGE AS LAST_MSG
+             , C.SND_DTM AS LAST_MSG_DTM
+        FROM BANG A,
+             MEMBER_BANG B,
+             (SELECT M1.ROOM_ID, M1.MESSAGE, M1.SND_DTM, M1.SND_ID
+              FROM MESSAGE M1
+                       JOIN (
+                  SELECT ROOM_ID, MAX(SND_DTM) AS MAX_SND_DTM
+                  FROM MESSAGE
+                  WHERE TYPE = 'TALK'
+                  GROUP BY ROOM_ID
+              ) M2 ON M1.ROOM_ID = M2.ROOM_ID AND M1.SND_DTM = M2.MAX_SND_DTM
+              WHERE M1.TYPE = 'TALK'
+              ORDER BY ROOM_ID
+             ) C
+        WHERE 1=1
+          AND A.ROOM_ID = B.ROOM_ID
+          AND A.ROOM_ID = C.ROOM_ID
+        <if test="USER_ID != null">
+          AND B.USER_ID = #{USER_ID}
+        </if>
+        ORDER BY LAST_MSG_DTM;
+    </select>
+
 </mapper>

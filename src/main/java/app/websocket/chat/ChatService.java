@@ -1,6 +1,7 @@
 package app.websocket.chat;
 
 import app.websocket.chat.entity.Bang;
+import app.websocket.chat.entity.ChatList;
 import app.websocket.chat.entity.Message;
 import app.websocket.system.utils.DateUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,7 +34,7 @@ public class ChatService {
     }
 
     //모든 방을 찾는 메서드
-    public List<Bang> findBangByUserId(String userId) {
+    public List<ChatList> findBangByUserId(String userId) {
         return chatRepository.findBangByUserId(userId);
     }
 
