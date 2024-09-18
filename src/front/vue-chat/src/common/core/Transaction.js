@@ -1,55 +1,50 @@
+import axios from 'axios';
 
-
+// 헤더 생성 함수
 const getHeaders = () => {
-    const headers = new Headers();
-    //headers.append('USER_ID', store.state.userData.userid);
-    headers.append('Content-Type', 'application/json');
+    const headers = {
+        'Content-Type': 'application/json',
+        // 'USER_ID': store.state.userData.userid, // 필요 시 추가
+    };
     return headers;
 };
 
+// axios를 사용한 gfnTrx 함수
 const gfnTrx = async (url, method, data, callback) => {
-    let IP='localhost';
-    //const PORT = process.env.VUE_APP_PORT;
+    let IP = 'localhost';
     const PORT = 8081;
-    // if (process.env.NODE_ENV === "prod") {
-        
-    //     IP = process.env.VUE_APP_END_POINT_IP;
-    // } else if (process.env.NODE_ENV === "test") {
-    //     IP = process.env.test.VUE_APP_END_POINT_IP;
-    // } else {
-    //     IP = 'localhost';
-    // }
 
-
+    // full URL 구성
     const fullUrl = `http://${IP}:${PORT}${url}`;
     console.log(fullUrl);
 
-
+    // axios 설정
     const config = {
-        method,
+        url: fullUrl,
+        method: method,
         headers: getHeaders(),
-        credentials: 'include' , // Include cookies if isAllCookie is true
-        body: data == null ? null : JSON.stringify(data)
+        withCredentials: true, // 쿠키를 포함한 요청
     };
-    
-    try {
-        const response = await fetch(fullUrl, config);
-        if (!response.ok) {
-            throw new Error(`API Error: ${response.statusText}`);
-        }
-        
-        const responseData = await response.json();
-        console.log(responseData.data);
-        // if(responseData.data.status != response.ok && responseData.data.status!= null){
-        //     alert(responseData.data.message);
-        // }
 
-        console.log('gfnTrx:', responseData);
-        //cookie.set('JSESSIONID', 'aaaaaa', 1);
+    // GET 요청일 경우, data를 쿼리 파라미터로 변환
+    if (method.toUpperCase() === 'GET' && data) {
+        config.params = data;  // 쿼리 파라미터로 변환
+    } else if (data) {
+        config.data = JSON.stringify(data);  // POST, PUT 등의 요청에서는 data를 본문으로 처리
+    }
+
+    try {
+        const response = await axios(config);
+        const responseData = response.data;
+        console.log('gfnTrx response data:', responseData);
+
+        // callback 함수 실행
         callback(responseData);
+
     } catch (error) {
         console.error('API Error:', error);
-        // Add additional error handling logic here if needed
+
+        // 추가적인 에러 처리 로직이 필요하다면 여기에 작성
     }
 };
 
