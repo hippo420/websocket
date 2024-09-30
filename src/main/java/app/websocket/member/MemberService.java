@@ -18,16 +18,18 @@ public class MemberService {
 
     public Member prcLogin(Member member){
 
+        if(member.getUSER_ID() == null)
+            throw new RuntimeException("ID is null");
 
-        Member loginMember = memberRepository.findMemberById(member.getUserId());
+        Member loginMember = memberRepository.findMemberById(member.getUSER_ID());
         if(loginMember!= null)
         {
             log.info("loginMember [{}]",loginMember.toString());
-            if(checkPassword(member.getPassword(), loginMember.getPassword())){
+            if(checkPassword(member.getPASSWORD(), loginMember.getPASSWORD())){
                 return loginMember;
             }else{
                 log.info("비번이 틀림");
-                return null;
+                throw new RuntimeException("비번이 틀림");
             }
         }
 
@@ -54,5 +56,9 @@ public class MemberService {
         if(!inputdata.equals(DBpassword))
             return false;
         return true;
+    }
+
+    public List<Member> findFriend(String userId) {
+        return memberRepository.findFriend(userId);
     }
 }

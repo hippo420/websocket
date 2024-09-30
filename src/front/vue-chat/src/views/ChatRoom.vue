@@ -1,7 +1,7 @@
 <template>
     <div class="chat-room-container">
         <header class="header">
-            <h2> {{ roomId }}</h2>
+            <h2> {{ ROOM_ID }}</h2>
         </header>
         
     
@@ -42,7 +42,7 @@ name: 'ChatRoom',
     data() {
         return {
             stompClient: null, // WebSocket 연결 객체
-            roomId: this.$route.params.id, // 라우트 파라미터에서 채팅방 ID 가져옴
+            ROOM_ID: this.$route.params.id, // 라우트 파라미터에서 채팅방 ID 가져옴
             messages: [], // 채팅 메시지 배열
             newMessage: '', // 입력 중인 새 메시지
         };
@@ -62,7 +62,7 @@ name: 'ChatRoom',
                 console.log('Connected: ' + frame);
 
                 // 채팅 메시지를 받을 구독 설정
-                this.stompClient.subscribe(`/topic/messages/${this.roomId}`, (message) => {
+                this.stompClient.subscribe(`/topic/messages/${this.ROOM_ID}`, (message) => {
                     const msg = JSON.parse(message.body);
                     console.log('받은 메시지: ',msg);
                     this.messages.push(msg);
@@ -80,14 +80,14 @@ name: 'ChatRoom',
         sendMessage() {
             if (this.newMessage.trim() !== '') {
                 const message = {
-                    ROOM_ID: this.roomId,
-                    SND_ID: this.getUserId,
+                    ROOM_ID: this.ROOM_ID,
+                    SND_ID: this.getUserData.USER_ID,
                     MESSAGE: this.newMessage,
                 };
                 console.log(message);
                 // STOMP 서버로 메시지 전송
                 this.stompClient.publish({
-                    destination: `/app/chat/${this.roomId}`, // 메시지를 보낼 서버 엔드포인트
+                    destination: `/app/chat/${this.ROOM_ID}`, // 메시지를 보낼 서버 엔드포인트
                     body: JSON.stringify(message),
                 });
 
@@ -99,7 +99,7 @@ name: 'ChatRoom',
         },
         messageAll(){
             let data ={
-                ROOM_ID:  this.roomId
+                ROOM_ID:  this.ROOM_ID
             };
             Transaction.gfnTrx("/findMsgAll","POST",data ,this.fnMsgCallback);
             

@@ -9,6 +9,7 @@
     INSERT INTO MESSAGE
     (
         ROOM_ID
+      , ROOM_NAME
       , TYPE
       , SND_ID
       , MESSAGE
@@ -17,6 +18,7 @@
     VALUES
     (
         #{ROOM_ID}
+      , #{ROOM_NAME}
       , #{TYPE}
       , #{SND_ID}
       , #{MESSAGE}
@@ -38,32 +40,47 @@
        </if>
      ORDER BY ID
 </select>
-    <select id="findBangByUserId" parameterType="String" resultType="app.websocket.chat.entity.ChatList">
-        SELECT A.ROOM_ID
-             , A.NAME
-             , A.IMG_CTT
-             , C.MESSAGE AS LAST_MSG
-             , C.SND_DTM AS LAST_MSG_DTM
-        FROM BANG A,
-             MEMBER_BANG B,
-             (SELECT M1.ROOM_ID, M1.MESSAGE, M1.SND_DTM, M1.SND_ID
-              FROM MESSAGE M1
-                       JOIN (
-                  SELECT ROOM_ID, MAX(SND_DTM) AS MAX_SND_DTM
-                  FROM MESSAGE
-                  WHERE TYPE = 'TALK'
-                  GROUP BY ROOM_ID
-              ) M2 ON M1.ROOM_ID = M2.ROOM_ID AND M1.SND_DTM = M2.MAX_SND_DTM
-              WHERE M1.TYPE = 'TALK'
-              ORDER BY ROOM_ID
-             ) C
-        WHERE 1=1
-          AND A.ROOM_ID = B.ROOM_ID
-          AND A.ROOM_ID = C.ROOM_ID
-        <if test="USER_ID != null">
-          AND B.USER_ID = #{USER_ID}
-        </if>
-        ORDER BY LAST_MSG_DTM;
-    </select>
+
+<resultMap id="ChatListResultMap" type="app.websocket.chat.entity.ChatList">
+    <result property="ROOM_ID" column="ROOM_ID" />
+    <result property="ROOM_NAME" column="ROOM_NAME"/>
+    <result property="IMG_CTT" column="IMG_CTT" />
+    <result property="MESSAGE" column="MESSAGE" />
+    <result property="SND_DTM" column="SND_DTM" />
+    <result property="ROOM_TYCD" column="ROOM_TYCD" />
+    <result property="JOIN_CNT" column="JOIN_CNT" />
+</resultMap>
+
+<select id="findBangByUserId" parameterType="String" resultMap="ChatListResultMap">
+    SELECT A.ROOM_ID AS ROOM_ID
+         , A.ROOM_NAME AS ROOM_NAME
+         , A.IMG_CTT AS IMG_CTT
+         , C.MESSAGE AS MESSAGE
+         , C.SND_DTM AS SND_DTM
+         , A.ROOM_TYCD AS ROOM_TYCD
+         , (SELECT COUNT(*) FROM BANG_JOIN WHERE ROOM_ID = A.ROOM_ID) AS JOIN_CNT
+    FROM BANG A,
+         BANG_JOIN B,
+         (SELECT M1.ID, M1.ROOM_ID, M1.MESSAGE, M1.SND_DTM, M1.SND_ID
+          FROM MESSAGE M1
+                   JOIN (
+              SELECT MAX(ID) AS ID, ROOM_ID, MAX(SND_DTM) AS MAX_SND_DTM
+              FROM MESSAGE
+              WHERE TYPE = 'TALK'
+              GROUP BY ROOM_ID
+          ) M2 ON M1.ROOM_ID = M2.ROOM_ID
+              AND M1.SND_DTM = M2.MAX_SND_DTM
+              AND M1.ID = M2.ID
+          WHERE M1.TYPE = 'TALK'
+          ORDER BY ROOM_ID
+         ) C
+    WHERE 1=1
+      AND A.ROOM_ID = B.ROOM_ID
+      AND A.ROOM_ID = C.ROOM_ID
+    <if test="USER_ID != null">
+      AND B.USER_ID = #{USER_ID}
+    </if>
+    ORDER BY SND_DTM;
+</select>
 
 </mapper>

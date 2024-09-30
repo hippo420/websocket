@@ -28,6 +28,7 @@ const gfnTrx = async (url, method, data, callback) => {
 
     // GET 요청일 경우, data를 쿼리 파라미터로 변환
     if (method.toUpperCase() === 'GET' && data) {
+        console.log('GET request with params:', data);
         config.params = data;  // 쿼리 파라미터로 변환
     } else if (data) {
         config.data = JSON.stringify(data);  // POST, PUT 등의 요청에서는 data를 본문으로 처리

@@ -1,5 +1,6 @@
 package app.websocket.chat.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
@@ -15,11 +16,15 @@ public class Message {
         //처음 입장인지 아닌지 구별하는 Enum
     }
     //단순 DTO
-
+    @JsonProperty("TYPE")
     private MessageType TYPE;
+    @JsonProperty("ROOM_ID")
     private String ROOM_ID;
+    @JsonProperty("SND_ID")
     private String SND_ID;
+    @JsonProperty("MESSAGE")
     private String MESSAGE;
+    @JsonProperty("SND_DTM")
     private String SND_DTM;
 
     @Builder

@@ -38,8 +38,8 @@ public class ChatContoller {
         //Get 요청이 들어올 시, 모든 방 목록을 조회한다.
     }
 
-    @GetMapping("findBangByUserId")
-    public List<ChatList> findBangByUserId(@RequestParam String USER_ID) {
+    @RequestMapping("findBangByUserId")
+    public List<ChatList> findBangByUserId(@RequestParam  String USER_ID) {
         log.info("findBangByUserId userId :{}",USER_ID);
         return chatService.findBangByUserId(USER_ID);
         //Get 요청이 들어올 시, 모든 방 목록을 조회한다.

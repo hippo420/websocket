@@ -4,13 +4,33 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="app.websocket.member.MemberRepository">
-
-<select id="findMemberById" parameterType="String" resultType="app.websocket.member.entity.Member">
-    SELECT USERID
-         , PASSWORD
-         , USER_NAME
+<resultMap id="MemberResultMap" type="app.websocket.member.entity.Member">
+    <result property="USER_ID" column="USER_ID" />
+    <result property="PASSWORD" column="PASSWORD" />
+    <result property="USER_NAME" column="USER_NAME" />
+    <result property="IMG_CTT" column="IMG_CTT" />
+    <result property="COMMENT" column="COMMENT" />
+</resultMap>
+<select id="findMemberById" parameterType="String" resultMap="MemberResultMap">
+    SELECT USER_ID  AS USER_ID
+         , PASSWORD AS PASSWORD
+         , USER_NAME AS USER_NAME
+         , IMG_CTT AS IMG_CTT
+         , COMMENT AS COMMENT
       FROM MEMBER
-     WHERE USERID = #{userId}
+     WHERE USER_ID = #{userId}
+</select>
+
+<select id="findFriend" parameterType="String" resultMap="MemberResultMap">
+    SELECT B.FRIEND_ID AS USER_ID
+         , A.USER_NAME AS USER_NAME
+         , A.IMG_CTT   AS IMG_CTT
+         , A.COMMENT   AS COMMENT
+    FROM MEMBER A
+       , (SELECT FRIEND_ID FROM MEMBER_FRIEND WHERE USER_ID = #{userId}) B
+    WHERE 1=1
+      AND A.USER_ID = B.FRIEND_ID
+    ORDER BY USER_NAME;
 </select>
 
 </mapper>

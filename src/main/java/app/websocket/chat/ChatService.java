@@ -48,8 +48,8 @@ public class ChatService {
         String randomId = UUID.randomUUID().toString();
         //랜덤 roomId 생성
         Bang chatRoom = Bang.builder() //builder로 변수 세팅
-                .roomId(randomId)
-                .name(name)
+                .ROOM_ID(randomId)
+                .ROOM_NAME(name)
                 .build();
 
         chatRooms.put(randomId, chatRoom); //방 생성 후 방 목록에 추가
