@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import store from '@/store'; // Vuex store를 가져옴
 import ChatList from '../views/ChatList.vue';
 import FriendList from '../views/FriendList.vue';
+import ChatRoom from '../views/ChatRoom.vue';
 import LoginPage from '../LoginView.vue';
 
 const routes = [
@@ -25,7 +26,7 @@ const routes = [
     {
         path: '/chat/:id',
         name: 'ChatRoom',
-        component: () => import('../views/ChatRoom.vue'), // 동적 라우팅으로 채팅방
+        component: ChatRoom,
         meta: { requiresAuth: true }, // 로그인 필요 페이지에 meta 설정
     },
 ];

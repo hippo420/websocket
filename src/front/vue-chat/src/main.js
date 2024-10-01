@@ -1,6 +1,7 @@
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faCog, faComments, faPaperPlane, faSmile, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faCog, faComments, faPaperPlane, faSmile, faUser,faAngleLeft  } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { createApp } from 'vue';
 import App from './App.vue';
@@ -10,7 +11,10 @@ library.add(faUser
             , faComments
             , faCog
             , faPaperPlane
-            , faSmile);
+            , faSmile
+            , faBars
+            , faAngleLeft
+);
 
 const app = createApp(App);
 

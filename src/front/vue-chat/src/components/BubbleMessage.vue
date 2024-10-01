@@ -2,7 +2,7 @@
     <div class="message-container" :class="{'own-message': isOwnMessage}">
         <!-- 타인 메시지일 때만 프로필 사진을 표시 -->
         <div v-if="!isOwnMessage" class="profile-picture">
-                <img :src="profileImage" alt="Profile" />
+                <img :src="this.fnGetImage(profileImage)" alt="Profile" />
         </div>
     
         <!-- 메시지 본문 -->
@@ -24,10 +24,12 @@
 </template>
 
 <script>
+import FileUtil from '@/common/util/FileUtil';
+import DateUtil from '@/common/util/DateUtil';
 export default {
     props: {
         profileImage: {
-        type: String,
+          type: Object,
         required: false, // 프로필 사진
         },
         sender: {
@@ -48,19 +50,23 @@ export default {
         },
     },
     methods: {
-        
+        fnGetImage(data){
+          if(data != null)
+            return FileUtil.fnGetProfileImageUrl(data);
+
+        }
     },
     computed: {
         formattedTime() {
             // snd_DTM 값을 '오후 10:30' 형식으로 변환
-            const date = this.sndDTM.substring(8,14);
-            const hours = date.substring(0,2);
-            const minutes = date.substring(2,4);
-            const isPM = hours >= 12;
-            const formattedHours = isPM ? hours - 12 : hours;
-            return `${isPM ? '오후' : '오전'} ${formattedHours}:${minutes}`;
-            
-        }
+
+          if(this.sndDTM != null)
+          {
+            return DateUtil.fnGetDateString(this.sndDTM);
+
+          }
+          else return this.sndDTM;
+        },
     }
 };
 </script>

@@ -2,6 +2,7 @@ package app.websocket.chat;
 
 import app.websocket.chat.entity.Bang;
 import app.websocket.chat.entity.ChatList;
+import app.websocket.chat.entity.MSG;
 import app.websocket.chat.entity.Message;
 import app.websocket.system.utils.DateUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -69,7 +70,7 @@ public class ChatService {
                 .build();
     }
 
-    public List<Message> findMsgAll(String roomId) {
+    public List<MSG> findMsgAll(String roomId) {
         return chatRepository.findMsgAll(roomId);
     }
 }

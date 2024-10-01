@@ -44,6 +44,7 @@ const store = createStore({
     getters: {
         isLoggedIn: (state) => state.isLoggedIn,
         getUserData: (state) => state.userData,
+        getUserId: (state) => state.userData.USER_ID,
     },
 });
 

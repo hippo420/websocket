@@ -1,36 +1,30 @@
 package app.websocket.chat.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+@Data
 @Getter
 @Setter
+public class MSG {
 
-public class ChatList {
-    @JsonProperty("USER_ID")
-    private String USER_ID;
-
+    //단순 DTO
+    @JsonProperty("TYPE")
+    private String TYPE;
     @JsonProperty("ROOM_ID")
     private String ROOM_ID;
-
-    @JsonProperty("ROOM_NAME")
-    private String ROOM_NAME;
-
+    @JsonProperty("SND_ID")
+    private String SND_ID;
+    @JsonProperty("MESSAGE")
+    private String MESSAGE;
+    @JsonProperty("SND_DTM")
+    private String SND_DTM;
     @JsonProperty("IMG_CTT")
     private Byte[] IMG_CTT;
 
-    @JsonProperty("MESSAGE")
-    private String MESSAGE;
-
-    @JsonProperty("SND_DTM")
-    private String SND_DTM;
-
-    @JsonProperty("ROOM_TYCD")
-    private String ROOM_TYCD;
-
-    @JsonProperty("JOIN_CNT")
-    private String JOIN_CNT;
 
 
 

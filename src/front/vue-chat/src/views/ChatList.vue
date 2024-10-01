@@ -10,7 +10,7 @@
             :IMG_CTT="chat.IMG_CTT"
             :ROOM_TYCD="chat.ROOM_TYCD"
             :JOIN_CNT="chat.JOIN_CNT"
-            @dblclick="openChat(chat.ROOM_ID)"
+            @dblclick="openChat(chat.ROOM_ID, chat.ROOM_NAME,chat.JOIN_CNT)"
         />
     </div>
 </template>
@@ -30,8 +30,11 @@ export default {
         };
     },
     methods: {
-        openChat(chatId) {
-            this.$router.push(`/chat/${chatId}`);
+        openChat(chatId,chatName, cnt) {
+
+            this.$router.push({ path :`/chat/${chatId}`
+                              ,  query :{ROOM_NAME: chatName,JOIN_CNT: cnt}
+            });
         },
         loadChatList(){
             let data ={

@@ -11,6 +11,8 @@
 </template>
 
 <script>
+
+import FileUtil from '@/common/util/FileUtil';
 export default {
   name: 'ProfileCard',
   data() {
@@ -35,13 +37,8 @@ export default {
   methods: {
     fetchImage() {
       if (this.IMG_CTT) {
-        const byteCharacters = new Uint8Array(this.IMG_CTT);
-         let binaryString = '';
-         byteCharacters.forEach((byte) => {
-           binaryString += String.fromCharCode(byte);
-         });
+        this.imageData = FileUtil.fnGetProfileImageUrl(this.IMG_CTT)
 
-        this.imageData = `data:;base64,${binaryString}`;
       } else {
         // 기본 이미지 설정 (이미지 없을 때)
         this.imageData = 'default.png'; // 기본 이미지 경로

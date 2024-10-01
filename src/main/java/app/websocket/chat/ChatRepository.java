@@ -2,6 +2,7 @@ package app.websocket.chat;
 
 import app.websocket.chat.entity.Bang;
 import app.websocket.chat.entity.ChatList;
+import app.websocket.chat.entity.MSG;
 import app.websocket.chat.entity.Message;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -14,6 +15,6 @@ public interface ChatRepository {
 
     void saveMessage(Message message);
 
-    List<Message> findMsgAll(String userId);
+    List<MSG> findMsgAll(String userId);
 
 }

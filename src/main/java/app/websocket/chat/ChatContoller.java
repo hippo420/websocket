@@ -2,6 +2,7 @@ package app.websocket.chat;
 
 import app.websocket.chat.entity.Bang;
 import app.websocket.chat.entity.ChatList;
+import app.websocket.chat.entity.MSG;
 import app.websocket.chat.entity.Message;
 import app.websocket.member.entity.Member;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,19 +27,19 @@ public class ChatContoller {
         //Post 요청이 들어올 시, Json에서 name 값을 받아 방을 생성한다.
     }
 
-    @RequestMapping("findMsgAll")
-    public List<Message> findMsgAll(@RequestBody Message Message) {
-        log.info("findMsgAll roomId:{}", Message.getROOM_ID());
-        List<Message> list = chatService.findMsgAll(Message.getROOM_ID());
+    @RequestMapping("/findMsgAll")
+    public List<MSG> findMsgAll(@RequestParam String ROOM_ID) {
+        log.info("findMsgAll roomId:{}", ROOM_ID);
+        List<MSG> list = chatService.findMsgAll(ROOM_ID);
         log.info("msg {}건", list.size());
-        for (Message msg : list) {
-            log.info("msg:{}", msg.toString());
+        for (MSG msg : list) {
+            //log.info("msg:{}", msg.toString());
         }
         return list;
         //Get 요청이 들어올 시, 모든 방 목록을 조회한다.
     }
 
-    @RequestMapping("findBangByUserId")
+    @RequestMapping("/findBangByUserId")
     public List<ChatList> findBangByUserId(@RequestParam  String USER_ID) {
         log.info("findBangByUserId userId :{}",USER_ID);
         return chatService.findBangByUserId(USER_ID);
