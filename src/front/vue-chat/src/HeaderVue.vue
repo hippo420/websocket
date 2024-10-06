@@ -32,30 +32,31 @@ export default {
 
         updateHeader(route) {
           // Customize this logic based on your routes
+          console.log("헤더 라우터정보:",route);
           switch (route.name) {
             case 'Home':
-              this.title = '채팅';
-              this.showSearch = true;
-              this.showAdd = true;
-              this.showSettings = true;
-              break;
-            case 'ChatRoom':
-              this.title = 'Chat Room';
-              this.showSearch = false;
-              this.showAdd = false;
-              this.showSettings = true;
-              break;
-            case 'Settings':
-              this.title = 'Settings';
-              this.showSearch = false;
-              this.showAdd = false;
-              this.showSettings = true;
-              break;
-            default:
-              this.title = 'Default Title';
+              this.title = '';
               this.showSearch = false;
               this.showAdd = false;
               this.showSettings = false;
+              break;
+            case 'ChatRoom':
+              this.title = '';
+              this.showSearch = false;
+              this.showAdd = false;
+              this.showSettings = true;
+              break;
+            case 'FriendList':
+              this.title = '친구';
+              this.showSearch = false;
+              this.showAdd = false;
+              this.showSettings = true;
+              break;
+            case 'ChatList':
+              this.title = '채팅';
+              this.showSearch = false;
+              this.showAdd = false;
+              this.showSettings = true;
               break;
           }
         },
