@@ -54,4 +54,5 @@ methods: {
 padding: 20px;
 background-color: rgb(234, 241, 233);
 }
+
 </style>

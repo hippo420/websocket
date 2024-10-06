@@ -1,7 +1,7 @@
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { faCog, faComments, faPaperPlane, faSmile, faUser,faAngleLeft  } from '@fortawesome/free-solid-svg-icons';
+import { faCog, faComments, faPaperPlane, faSmile, faUser,faAngleLeft,faPlus, faMagnifyingGlass ,faGear, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { createApp } from 'vue';
 import App from './App.vue';
@@ -14,6 +14,10 @@ library.add(faUser
             , faSmile
             , faBars
             , faAngleLeft
+            , faPlus
+            , faMagnifyingGlass
+            , faGear
+            , faUserPlus
 );
 
 const app = createApp(App);

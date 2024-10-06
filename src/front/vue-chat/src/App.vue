@@ -1,9 +1,11 @@
 <template>
   <div id="app">
     <!-- 로그인 상태에 따라 화면을 조건부로 렌더링 -->
-    <LoginView v-if="!isLoggedIn" @login-success="handleLoginSuccess" />
+    <div v-if="!isLoggedIn">
+      <LoginView  @login-success="handleLoginSuccess" />
+    </div>
     <div v-else>
-
+      <HeaderVue />
       <MainView />
       <FooterVue />
     </div>
@@ -11,14 +13,14 @@
 </template>
 
 <script>
-
+import HeaderVue from '@/HeaderVue.vue';
 import FooterVue from '@/FooterVue.vue';
 import MainView from '@/MainView.vue';
 import LoginView from '@/LoginView.vue';
 export default {
   name: 'App',
   components: {
-
+    HeaderVue,
     MainView,
     FooterVue,
     LoginView,
@@ -38,8 +40,7 @@ export default {
   },
   mounted() {
     const token = localStorage.getItem('token');
-    console.log(localStorage)
-    console.log('token:',token);
+
     if (token) {
       this.$store.dispatch('setLogInState', true);  // 로그인 상태 Vuex에 반영
       this.handleLoginSuccess();

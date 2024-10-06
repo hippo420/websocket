@@ -1,6 +1,7 @@
 <template>
+
   <div class="friend-list-container">
-    <h2 class="friends-title">친구 <span class="friend-count">{{ friendList.length }}</span></h2>
+
     <!-- 사용자 프로필 카드 -->
     <div class="profile-card">
       <ProfileCard
@@ -64,6 +65,26 @@ export default {
 </script>
 
 <style scoped>
+
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1px;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+}
+.left-side {
+  display: flex;
+  align-items: center;
+}
+.menu-button {
+  background: none;
+  border: none;
+  width: 120%;
+  font-size: 20px;
+  cursor: pointer;
+}
 .friends-title {
   text-align: left; /* 제목 왼쪽 정렬 */
   font-size: 24px; /* 제목 크기 조정 */
@@ -81,7 +102,7 @@ export default {
 
 .friend-list-container {
   min-height: 800px;
-  padding: 10px;
+  padding: 3px;
   background-color: #FFFFFF;
 }
 

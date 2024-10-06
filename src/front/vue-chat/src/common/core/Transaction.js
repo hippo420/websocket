@@ -39,6 +39,7 @@ const gfnTrx = async (url, method, data, callback) => {
         const responseData = response.data;
         console.log('gfnTrx response data:', responseData);
 
+
         // callback 함수 실행
         callback(responseData);
 

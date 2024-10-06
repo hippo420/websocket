@@ -22,8 +22,10 @@ public class MemberController {
     @RequestMapping("/login")
     public Member login(HttpServletResponse response, @RequestBody Member member) {
         log.info("member: {}", member.toString());
-        Cookie cookie = new Cookie("token", String.valueOf(UUID.randomUUID()));
-        cookie.setHttpOnly(true);
+        String token = String.valueOf(UUID.randomUUID());
+        Cookie cookie = new Cookie("token", token);
+        log.info("token: {}", token);
+        //cookie.setHttpOnly(true);
         cookie.setPath("/");
         cookie.setMaxAge(60*60*24);
         response.addCookie(cookie);

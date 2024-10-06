@@ -1,6 +1,19 @@
 <template>
-    <div class="chat-list-container">
-      <h2 class="chat-title">채팅 </h2>
+  <header class="main-header">
+    <h2 class="chat-title">채팅</h2>
+    <div class="left-side">
+    <button @click="findBang" class="menu-button">
+      <font-awesome-icon icon="magnifying-glass" />
+    </button>
+    <button @click="addBang" class="menu-button">
+      <font-awesome-icon icon="plus" />
+    </button>
+    <button @click="setting" class="menu-button">
+      <font-awesome-icon icon="gear" />
+    </button>
+    </div>
+  </header>
+  <div class="chat-list-container">
         <ChatCard
             v-for="chat in chatList"
             :key="chat.ROOM_ID"
@@ -55,17 +68,35 @@ export default {
 </script>
 
 <style scoped>
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1px;
+  background-color: white;
+  border-bottom: 1px solid lightgray;
+}
+.left-side {
+  display: flex;
+  align-items: center;
+}
 .chat-title {
   text-align: left; /* 제목 왼쪽 정렬 */
   font-size: 24px; /* 제목 크기 조정 */
   margin-bottom: 10px; /* 제목과 친구 카드 사이 여백 */
   display: flex; /* 플렉스 박스 사용 */
   align-items: flex-end; /* 맨 아래로 정렬 */
-  border-bottom: 1px solid lightgray; /* 밑줄 색상과 두께 */
-  padding-bottom: 5px;          /* 텍스트와 밑줄 사이 간격 */
+  padding-bottom: 1px;          /* 텍스트와 밑줄 사이 간격 */
 }
 .chat-list-container {
 padding: 20px;
 background-color: #FFFFFF;
+}
+.menu-button {
+  background: none;
+  border: none;
+  width: 120%;
+  font-size: 20px;
+  cursor: pointer;
 }
 </style>
