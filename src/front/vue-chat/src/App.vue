@@ -17,6 +17,7 @@ import HeaderVue from '@/HeaderVue.vue';
 import FooterVue from '@/FooterVue.vue';
 import MainView from '@/MainView.vue';
 import LoginView from '@/LoginView.vue';
+import Cookies from "js-cookie";
 export default {
   name: 'App',
   components: {
@@ -37,11 +38,13 @@ export default {
       this.isLoggedIn = true; // 로그인 성공 시 메인 화면을 표시
 
     },
+
+
   },
   mounted() {
-    const token = localStorage.getItem('token');
 
-    if (token) {
+
+    if (Cookies.get("token")) {
       this.$store.dispatch('setLogInState', true);  // 로그인 상태 Vuex에 반영
       this.handleLoginSuccess();
     }

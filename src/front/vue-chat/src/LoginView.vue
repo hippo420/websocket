@@ -64,6 +64,12 @@ export default {
 
         },
     },
+  mounted() {
+      if(this.$store.state.isLoggedIn === true)
+      {
+        this.$router.push('chat-list');
+      }
+  }
 };
 </script>
 

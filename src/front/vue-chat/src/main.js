@@ -7,6 +7,7 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router'; // 라우터를 불러옴
 import store from './store';
+import cookie from './cookie/cookie';
 library.add(faUser
             , faComments
             , faCog
@@ -28,5 +29,6 @@ app.component('font-awesome-icon', FontAwesomeIcon);
 // 플러그인 사용 설정
 app.use(router); // 라우터 사용
 app.use(store);  // vuex 사용
+app.use(cookie); // 쿠키
 
 app.mount('#app');

@@ -1,4 +1,5 @@
 import { createStore } from 'vuex';
+import Cookies from "js-cookie";
 
 
 const store = createStore({
@@ -19,6 +20,25 @@ const store = createStore({
             state.userData.USER_NAME = payload.userData.USER_NAME;
             state.userData.IMG_CTT = payload.userData.IMG_CTT;
             state.userData.COMMENT = payload.userData.COMMENT;
+
+            if(Cookies.get("token") == null)
+            {
+                console.log("쿠키없음-> 획득시도");
+                const name ="token";
+                const value = `; ${document.cookie}`;
+                const parts = value.split(`; ${name}=`);
+                if (parts.length === 2){
+                    const token = parts.pop().split(';').shift();
+                    // 쿠키 설정 (필요한 경우에만 사용)
+                    Cookies.set('token', token, { expires: 1 });
+                    console.log("token:",token);
+                }
+            }else{
+                console.log("쿠키있음 => ",Cookies.get("token"));
+            }
+
+
+
         },
         logout(state) {
             state.isLoggedIn = false;
